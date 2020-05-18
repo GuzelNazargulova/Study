@@ -1,0 +1,4 @@
+from lab4G import *
+id1=user_id1()
+wall_post=wall_post()
+friendlist=friendlist()
