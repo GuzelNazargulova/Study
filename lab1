@@ -1,0 +1,33 @@
+import os
+from math import sin
+import re
+import numpy as np
+import matplotlib.pyplot as plt
+
+%matplotlib inline  
+ls2 =[f  for f in os.listdir('./')  if f.endswith('.dat') and f.startswith('psi2_')]
+ls1 =[f  for f in os.listdir('./')  if f.endswith('.dat') and f.startswith('psi_')]
+
+def replace_in_file(file):
+    data=[]
+    with  open(file) as f:
+        for line  in f:
+            l = [float(x) for x in line.replace('D','E').replace('  ',' ').split()]
+            data.append(l)
+    return data
+
+def replace_name(name):
+    R_text=  re.search(r'=\s*([\d\.D+]+)\.',name)
+    return float(R_text.group(1).replace('D','E'))
+   
+result = open('result.txt','w')
+R_list=[]
+M_list=[]
+for f in ls2: 
+    R= replace_name(f)
+    R_list.append(R)
+    dat = np.array(replace_in_file(f)).T[1]
+    max_v = dat[int(len(dat)/2):].max()
+    M_list.append(max_v)
+    result.write('{} {}\n'.format(R,max_v))
+result.close()
