@@ -1,0 +1,29 @@
+import vk
+def user_id1():
+    session = vk.Session(
+        access_token='dbe8f6c3e89a01db595689f7f0109fdca26e00bfbefc68cf13d8d1d6d1c332270a0fd117778c522e69afa')
+    api = vk.API(session, v='5.92', lang='ru', timeout=10)
+    api.users.get(user_ids=1)
+    print(api.users.get(user_ids=1))
+
+
+def wall_post():
+    session = vk.Session(
+        access_token='dbe8f6c3e89a01db595689f7f0109fdca26e00bfbefc68cf13d8d1d6d1c332270a0fd117778c522e69afa')
+    api = vk.API(session, v='5.92', lang='ru', timeout=10)
+    api.wall.post(owner_id='102606399', message="Работай плез", v="5.92")
+def friendlist():
+    session = vk.Session(
+        access_token='dbe8f6c3e89a01db595689f7f0109fdca26e00bfbefc68cf13d8d1d6d1c332270a0fd117778c522e69afa')
+    api = vk.API(session, v='5.92', lang='ru', timeout=10)
+    print(api.friends.get(fields='nickname',count=10))
+
+
+
+
+
+
+
+
+
+
