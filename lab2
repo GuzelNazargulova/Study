@@ -1,0 +1,146 @@
+def Par_R(Names):
+    temp=[]
+
+    length=len(Names)
+    Arr=[0]*length
+    
+    for element in Names:
+        temp.append(element)
+    
+    for i in range(0,length):
+        temp[i]=temp[i].split()
+        temp[i][1]=temp[i][1].replace('.dat',' ')
+        temp[i][1]=temp[i][1].replace('D','E')
+        Arr[i]=temp[i][1] 
+        
+    return Arr
+
+def Coor_x(Names,path):
+    temp=[]
+    xCoord=[]
+    
+    with open(path+'\\'+Names) as f:
+        temp=f.read().split()
+    
+    num=len(temp)
+    
+    for i in range(0,num,5):
+        xCoord.append(temp[i])
+        
+    num=int(num/5)
+    
+    for i in range(0,num):
+        xCoord[i]=float(xCoord[i])
+             
+    return ((xCoord))
+
+def Coor_y(Names,path):
+    temp=[]
+    yCoord=[]
+    
+    with open(path+'\\'+Names) as f:
+        temp=f.read().split()
+        
+    num=len(temp)
+    
+    
+    for i in range(1,num,5):
+        yCoord.append(temp[i])
+
+    num=int(num/5)
+    
+    for i in range(0,num):
+        yCoord[i]=float(yCoord[i])
+        
+        
+    return ((yCoord))
+
+    
+    
+def graph(X,Y,X1,Y1):
+    plt.plot(X,Y)
+    plt.plot(X1,Y1)
+    plt.show()
+
+def File_Names1(Names):
+    FileNames=[]
+    temp=[]
+    R2=[]
+    
+    for element in Names:
+        temp.append(element)
+    for element in Names:
+        R2.append(element)
+    
+    for i in range(0,len(Names)):
+        temp[i]=temp[i].split()
+        if(temp[i][0]=='psi_G='):
+            FileNames.append(R2[i])
+    return FileNames
+
+
+def File_Names2(Names):
+    FileNames=[]
+    temp=[]
+    R2=[]
+    
+    for element in Names:
+        temp.append(element)
+    for element in Names:
+        R2.append(element)
+    
+    for i in range(0,len(Names)):
+        temp[i]=temp[i].split()
+        if(temp[i][0]=='psi2_G='):
+            FileNames.append(R2[i])
+    return FileNames
+
+def Max_X(Names,path):
+    temp=[]
+    xMax=[]
+    temp1=[]
+    
+    with open(path+'\\'+Names) as f:
+        temp=f.read().split()
+    
+    for i in range(1,int(len(temp)),5):
+         temp1.append(temp[i])
+      
+    temp1.reverse()
+    num=int(len(temp1))
+    num=int(num/2)
+    
+    for i in range(0,num):
+          xMax.append(temp1[i])
+     
+    for i in range(0,num):
+        xMax[i]=float(xMax[i])
+      
+        
+    X=max(xMax)
+    
+    return (X)
+
+def Max_Y(Names):
+    temp=[]
+    R=[]
+    
+    for element in Names:
+        temp.append(element)
+    for i in range(0,int(len(temp))):
+        temp[i]=temp[i].split()
+        temp[i][1]=temp[i][1].replace('.dat',' ')
+        temp[i][1]=temp[i][1].replace('D','E')
+        R.append(temp[i][1])
+    for i in range(0,int(len(R))):
+        R[i]=float(R[i])
+    return (R)    
+
+    
+def graphMax(X,Y):
+    plt.xlabel('R')
+    a=chr(968)
+    plt.ylabel(a)
+    plt.plot(X,Y)
+    plt.show()
+    
