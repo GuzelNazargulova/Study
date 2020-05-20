@@ -1,0 +1,37 @@
+from lab2 import *
+
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+Dir="D:\\download\\test\\test"
+Names=os.listdir(path=Dir)
+R=Par_R(Names)
+for i in range(0,int(len(Names)/2)):
+    X=Coor_x(Names[i],Dir)
+    Y=Coor_y(Names[i],Dir)
+    X1=Coor_x(Names[i+7],Dir)
+    Y1=Coor_y(Names[i+7],Dir)
+    R[i]=float(R[i])
+    R[i]=str(R[i])
+    plt.title('R='+ R[i])
+    plt.xlabel('t')
+    plt.ylabel(chr(968))
+    G=graph(X,Y,X1,Y1)
+K=File_Names1(Names)
+M2=Max_Y(K)
+temp=[]
+M1=[]
+for i in K:
+    temp=Max_X(i,Dir)
+    M1.append(temp) 
+plt.title('psi1_G')   
+G=graphMax(M2,M1)
+K1=File_Names2(Names)
+M3=Max_Y(K1)
+M4=[]
+for i in K1:
+    temp=Max_X(i,Dir)
+    M4.append(temp)
+   
+plt.title('psi2_G')     
+G=graphMax(M3,M4)
