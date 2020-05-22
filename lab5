@@ -1,0 +1,165 @@
+import re
+
+def printArticle(dictArt):
+    file = open(r'D:\download\print.txt','a+', encoding='utf-8')
+
+    file.write('{0} {1} // {2}{3}.\n\n'.format(dictArt.get('author'),dictArt.get('title'),dictArt.get('journal'),
+                                                              dictArt.get('year')))
+    return
+def printconf(dictConf):
+    file = open(r'D:\download\print.txt','a+', encoding='utf-8')
+
+    file.write('{0} {1}  {2},{3}.\n\n'.format(dictConf.get('author'), dictConf.get('title'),
+                                                              dictConf.get('booktitle'),
+                                                              dictConf.get('year')))
+
+def printbooklet(dictbooklet):
+    file = open(r'D:\download\print.txt','a+', encoding='utf-8')
+
+    file.write('{0}\n\n'.format(dictbooklet.get('title')))
+
+def printbook(dictbook):
+    file = open(r'D:\download\print.txt','a+', encoding='utf-8')
+
+    file.write('{0}, {1}; {2}, {3}\n\n'.format(dictbook.get('author'),dictbook.get('title'),dictbook.get('publisher'),dictbook.get('year')))
+
+
+
+def comment(str):
+    return re.match('%', str)
+
+
+def parse(adr):
+    with open(adr, encoding='utf-8') as file:
+        text = file.read()
+    records = [i for i in re.split('\n@', text) if not comment(i)]
+
+    search_title = re.compile("\s*Title\s*=\s*{\s?(?P<title>\S.*\s?)}", re.MULTILINE).search
+    search_author = re.compile("\s*Author\s*=\s*{\s?(?P<author>\S.*\s?)}", re.MULTILINE).search
+    search_journal = re.compile("\s*Journal\s*=\s*{\s(?P<journal>\S.*\s?)}", re.MULTILINE).search
+    search_year = re.compile("\s*Year\s*=\s*{\s*(?P<year>\S.*\s?)}", re.MULTILINE).search
+    search_pages = re.compile("\s*Pages\s*=\s*{\s*(?P<pages>\S.*\s?)}", re.MULTILINE).search
+    search_volume = re.compile("\s*Volume\s*=\s*{\s*(?P<volume>\S.*)}", re.MULTILINE).search
+    search_owner = re.compile("\s*Owner\s*=\s*{\s*(?P<owner>\S.*\s?)}", re.MULTILINE).search
+    search_timestamp = re.compile("\s*Timestamp\s*=\s*{\s*(?P<timestamp>\S.*)}", re.MULTILINE).search
+    search_language = re.compile("\s*Language\s*=\s*{\s*(?P<language>\S.*)}", re.MULTILINE).search
+    search_file = re.compile("\s*File\s*=\s*{\s*(?P<file>\S.*\s?)}", re.MULTILINE).search
+    search_publisher = re.compile("\s*Publisher\s*=\s*{\s*(?P<publisher>\S.*\s?)}", re.MULTILINE).search
+    search_numpages = re.compile("\s*Numpages\s*=\s*{\s*(?P<numpages>\S.*)}", re.MULTILINE).search
+    search_type = re.compile("\s*Type\s*=\s*{\s*(?P<type>\S.*\s?)}")
+    search_booktitle = re.compile("\s*Booktitle\s*=\s*{\s*(?P<booktitle>\S.*)}", re.MULTILINE).search
+    search_nite = re.compile("\s*Nite\s*=\s*{\s*(?P<nite>\S.*)}", re.MULTILINE).search
+    search_address = re.compile("\s*Address\s*=\s*{\s*(?P<address>\S.*)}", re.MULTILINE).search
+
+    result = []
+
+    for r in records:
+
+        dictionary = {}
+
+        i = search_title(r)
+        if i:
+            dictionary['title'] = i.group('title')
+
+
+
+
+        i = search_author(r)
+        if i:
+            dictionary['author'] = i.group('author')
+
+
+
+
+        i = search_journal(r)
+        if i:
+            dictionary['journal'] = i.group('journal')
+
+
+        i = search_year(r)
+        if i:
+            dictionary['year'] = i.group('year')
+
+
+
+
+        i = search_pages(r)
+        if i:
+            dictionary['pages'] = i.group('pages')
+
+
+
+        i = search_volume(r)
+        if i:
+            dictionary['volume'] = i.group('volume')
+
+
+
+
+        i = search_owner(r)
+        if i:
+            dictionary['owner'] = i.group('owner')
+
+
+        i = search_timestamp(r)
+        if i:
+            dictionary['timestamp'] = i.group('timestamp')
+
+
+
+        i = search_language(r)
+        if i:
+            dictionary['language'] = i.group('language')
+
+
+
+        i = search_file(r)
+        if i:
+            dictionary['file'] = i.group('file')
+
+
+
+        i = search_publisher(r)
+        if i:
+            dictionary['publisher'] = i.group('publisher')
+
+
+
+        i = search_numpages(r)
+        if i:
+            dictionary['numpages'] = i.group('numpages')
+
+
+
+
+
+        i = search_booktitle(r)
+        if i:
+            dictionary['booktitle'] = i.group('booktitle')
+
+
+
+        i= search_nite(r)
+        if i:
+            dictionary['nite'] = i.group('nite')
+
+        file=open(adr,'r',encoding='utf-8').read().replace(' and ',',').split('\n@')
+
+        if r.startswith('Article'):
+            printArticle(dictionary)
+        if r.startswith('Conference'):
+            printconf(dictionary)
+        if r.startswith('Booklet'):
+            printbooklet(dictionary)
+        if r.startswith('Book'):
+            printbook(dictionary)
+
+
+
+
+
+
+
+
+dictionary=parse('D:\\download\\biblio.bib')
+
