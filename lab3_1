@@ -1,0 +1,12 @@
+from lab3 import *
+print ("Сохранять видео?y/n")
+a=str(input())
+if(a=='y'):
+    V=True
+else:
+    if(a=='n'):
+        V = False
+    else:
+        print("Некорректный ввод")
+
+Camera=Video(V)
