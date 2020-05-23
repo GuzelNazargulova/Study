@@ -1,0 +1,58 @@
+import sqlite3
+import re
+
+
+def create():  # Функцию вызываем только один раз для создания БД
+    conn = sqlite3.connect("lab6.db")
+    cursor = conn.cursor()
+    cursor.execute(""" CREATE TABLE Article 
+                  (AUTHOR,TITLE,JOURNAL,YEAR)
+               """)
+
+
+def comment(str):
+    return re.match('%', str)
+
+
+def insert_Parse(adr):
+    conn = sqlite3.connect("lab6.db")
+    cursor = conn.cursor()
+    with open(adr, encoding='utf-8') as file:
+        text = file.read()
+    records = [i for i in re.split('\n@', text) if not comment(i)]
+
+    search_title = re.compile("\s*Title\s*=\s*{\s?(?P<title>\S.*\s?)}", re.MULTILINE).search
+    search_author = re.compile("\s*Author\s*=\s*{\s?(?P<author>\S.*\s?)}", re.MULTILINE).search
+    search_journal = re.compile("\s*Journal\s*=\s*{\s(?P<journal>\S.*\s?)}", re.MULTILINE).search
+    search_year = re.compile("\s*Year\s*=\s*{\s*(?P<year>\S.*\s?)}", re.MULTILINE).search
+
+    for r in records:
+
+        dictionary = {}
+
+        i = search_title(r)
+        if i:
+            dictionary['title'] = i.group('title')
+
+        i = search_author(r)
+        if i:
+            dictionary['author'] = i.group('author')
+
+        i = search_journal(r)
+        if i:
+            dictionary['journal'] = i.group('journal')
+
+        i = search_year(r)
+        if i:
+            dictionary['year'] = i.group('year')
+
+        dic = [(dictionary.get('author'), dictionary.get('title'), dictionary.get('journal'), dictionary.get('year'))]
+
+        cursor.executemany("INSERT INTO Article VALUES (?,?,?,?,?)", dic)
+        conn.commit()
+
+
+def print_table(Surname):
+    Auth=[(Surname)]
+    cursor.executemany("SELECT * FROM Article WHERE AUTHOR LIKE '?%'",Auth)
+    print(cursor.fetchall())
