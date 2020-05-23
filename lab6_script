@@ -1,0 +1,4 @@
+import module6
+print('Введите фамилию автора:')
+author=str(input())
+module6.print_table(author)
